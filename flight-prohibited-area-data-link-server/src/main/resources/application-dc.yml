@@ -1,0 +1,66 @@
+# tomcatを起動しない
+spring.main.web-application-type: none
+# camel常時実行
+camel.springboot.main-run-controller: true
+
+# ログレベル
+#logging.level:
+#  # 通常設定
+#  "com.hitachi.droneroute.fpadl": info
+#  # デバッグ設定
+#  "com.hitachi.droneroute.fpadl": debug
+
+# ルート
+route:
+  #自動起動
+  auto-startup: true
+  # 実行間隔※1分=1*60*1000=60000ミリ秒
+  interval: 60000
+
+# REST
+rest:
+  # タイムアウト
+  timeout:
+    # 接続タイムアウト時間（ミリ秒）
+    connect: 10000
+    # 読み取りタイムアウト時間（ミリ秒）
+    read: 10000
+  # 最大リトライ回数
+  max-retry-count: 3
+  # DIPS
+  dips:
+    # エンドポイント
+    endpoint: ${rest.dips.endpoint.to.contextpath}/api/v1/flightProhibitedAreaReceiver
+    # 現在時刻に加算する時分秒の分
+    add-minutes-to-now:
+      # 検索期間(FROM)※未設定時はDIPSで今日の0時0分になる
+      search-period-from: -10
+      # 検索期間(TO)※未設定時はDIPSで今日の23時59分になる
+      search-period-to: 20
+    # 検索期間
+    search-period:
+      # 日付形式
+      date-formmat-: "uuuuMMdd "
+      # タイムゾーン
+      time-zone: "UTC"
+    # 座標リスト※WGS84(SRID=4326)
+    coordinates-list:
+      # 埼玉県秩父地域:四角形
+      - "[[138.565063, 36.206052],[139.270248, 36.206052],[139.270248, 35.822267],[138.565063, 35.822267]]"
+      # 静岡県浜松市：四角形
+      - "[[137.695531, 35.305039],[138.050692, 35.305039],[138.050692, 34.640377],[137.695531, 34.640377]]"
+  # NECコンソ
+  nec:
+    # エンドポイント
+    endpoint: ${rest.nec.endpoint.to.contextpath}/api/flight_prohibited_area
+
+#MQTT※エラーをMQTTのpublishで通知することになったら、値の修正や環境変数による値の上書きをすること
+mqtt:
+  broker:
+    url: "ssl://localhost:8883"
+    clientId: "mqttFlightProhibitedAreaDataLinkClient"
+    userName: "user"
+    password: "password"
+    qos: 0
+    administratorId: "administratorId"
+    topicPublishError: "airway/administrator/{administratorId}/flightProhibitedArea/error"
