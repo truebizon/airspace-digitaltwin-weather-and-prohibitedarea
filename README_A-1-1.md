@@ -33,6 +33,14 @@ cd flight-prohibited-area-data-link-server
 ./gradlew bootJar
 ```
 
+## Docker での実行
+
+Docker と docker-compose を利用すると、2 つのサーバーをまとめて起動できます。
+
+```bash
+docker-compose up --build
+```
+
 ## 環境変数
 
 環境変数の説明と設定値例を記載します。
