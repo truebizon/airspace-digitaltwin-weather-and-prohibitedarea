@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  weather:
+    build: ./weather-data-link-server
+  prohibited-area:
+    build: ./flight-prohibited-area-data-link-server

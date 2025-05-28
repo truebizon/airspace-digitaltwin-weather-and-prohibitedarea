@@ -1,0 +1,11 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build weather image
+        run: docker build -t weather ./weather-data-link-server
+      - name: Build prohibited-area image
+        run: docker build -t prohibited ./flight-prohibited-area-data-link-server
